@@ -28,16 +28,18 @@ textModel = markovify.Text(text)
 
 client.connect("mqtt.bucknell.edu")
 last = datetime.datetime.now()
+topics = ["topic_{}".format(random.choice(words)) for i in range(6)]
 
 while True:
     if datetime.datetime.now() - last > datetime.timedelta(seconds=1):
-        topic = random.choice(words)
+        topic = random.choice(topics)
         #print(topic)
         #sen = textModel.make_short_sentence(140)
         sen = textModel.make_short_sentence(140)#, max_overlap_total=100)
-        print (topic, ':', sen)
+        botname = 'bot_'+random.choice(words)
+        print (botname, '-->', topic, ':', sen)
 
-        client.publish('root/'+topic+'/bot',
+        client.publish('root/'+topic+'/'+ botname,
             json.dumps({
                 'clientTime': int(time.time()),
                 'message': sen,
